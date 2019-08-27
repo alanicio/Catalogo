@@ -102,157 +102,157 @@ class ProductoController extends Controller
     }
 
      /*Version 6, limpia acentos de las vocales unicamente*/
-    // public function Buscar(Request $request)
-    // {
-    //     $start = microtime(true);
-    //     //$oracion=strtolower($request->search);
-    //     $palabras=preg_split('/\s+/', strtolower($this->LimpiarAcentos($request->search)), -1, PREG_SPLIT_NO_EMPTY);
-    //     $productos=DB::table('productos');
-    //     //dd($palabras);
-    //     foreach ($palabras as $key => $palabra) {
-    //         $productos->where(function($query) use($palabra){
-    //             $query->orWhere('marca','LIKE','%'.utf8_encode($palabra).'%')->orWhere('titulo','LIKE','%'.utf8_encode($palabra).'%')->orWhere('modelo','LIKE','%'.utf8_encode($palabra).'%');
-    //             $acentos=$this->PosiblesAcentos($palabra);
-    //             foreach ($acentos as $ac) {
-    //                 $query->orWhere('marca','LIKE','%'.utf8_encode($ac).'%')->orWhere('titulo','LIKE','%'.utf8_encode($ac).'%');
-    //             }
-    //         });
-    //     }
-    //     //dd($productos->paginate(9));
-    //     $productos=$this->Ordenarresultados($productos->get(),$palabras);
+    public function Buscar(Request $request)
+    {
+        $start = microtime(true);
+        //$oracion=strtolower($request->search);
+        $palabras=preg_split('/\s+/', strtolower($this->LimpiarAcentos($request->search)), -1, PREG_SPLIT_NO_EMPTY);
+        $productos=DB::table('ps_product_lang');
+        //dd($palabras);
+        foreach ($palabras as $key => $palabra) {
+            $productos->where(function($query) use($palabra){
+                $query->orWhere('name','LIKE','%'.$palabra.'%')->orWhere('description_short','LIKE','%'.$palabra.'%');
+                $acentos=$this->PosiblesAcentos($palabra);
+                foreach ($acentos as $ac) {
+                    $query->orWhere('name','LIKE','%'.$ac.'%')->orWhere('description_short','LIKE','%'.$ac.'%');
+                }
+            });
+        }
+        //dd($productos->paginate(9));
+        $productos=$this->Ordenarresultados($productos->get(),$palabras);
         
-    //     //Get current page form url e.g. &page=2, at default 1
-    //     $currentPage=Input::get('page',1);
+        //Get current page form url e.g. &page=2, at default 1
+        $currentPage=Input::get('page',1);
 
-    //     //Define how many items to show in each page
-    //     $perPage = 9;
+        //Define how many items to show in each page
+        $perPage = 5;
 
-    //     //Slice the collection according to per page
-    //     $currentPageResults = $productos->slice(($currentPage-1)*$perPage,$perPage)->all();
+        //Slice the collection according to per page
+        $currentPageResults = $productos->slice(($currentPage-1)*$perPage,$perPage)->all();
 
-    //     //Create the paginator and pass it to the view
-    //     $paginatedResults= new LengthAwarePaginator($currentPageResults, count($productos),$perPage,$currentPage,['path'=>$request->url(),'query'=>$request->query()]);
-    //     //dd($paginatedResults);
+        //Create the paginator and pass it to the view
+        $paginatedResults= new LengthAwarePaginator($currentPageResults, count($productos),$perPage,$currentPage,['path'=>$request->url(),'query'=>$request->query()]);
+        //dd($paginatedResults);
 
-    //     return view('Tienda.tienda',['productos'=>$paginatedResults]);
-    // }
+        return view('Tienda.tienda',['productos'=>$paginatedResults]);
+    }
 
-    // public function Ordenarresultados(Collection $productos,$palabras)
-    // {
-    //    // $word = "Many Blocks";
-    //    //  if ( preg_match("~\bblocks\b~",$word) )
-    //    //    dd("matched");
-    //    //  else
-    //    //    dd("no match");
-    //     $matchResul=[];
-    //     foreach ($productos as $key => $p) {
-    //         $match=0;
-    //         $titulo=str_replace(['/','-',' '],'-',utf8_decode($p->titulo));
-    //         $modelo=str_replace(['/','-',' '],'-',utf8_decode($p->modelo));
-    //         $product=strtolower($this->LimpiarAcentos($titulo));
-    //         $$modelo=strtolower($this->LimpiarAcentos($modelo));
-    //         foreach ($palabras as $palabra) {
-    //            $palabra=strtolower($this->LimpiarAcentos($palabra));
-    //            if ( preg_match("~\b".$palabra."\b~",$product) )
-    //            {
-    //             $match++;
-    //            }
-    //            if(strpos($product, $palabra)===0)
-    //            {
-    //             $match++;
-    //            }
-    //            if ( preg_match("~\b".$palabra."\b~",$modelo) )
-    //            {
-    //             $match+=200;
-    //            }
-    //        }
-    //        $matchResul[]=$match;
-    //     }
-    //     //dd($productos[0]);
-    //     arsort($matchResul);
-    //     $keyOrder = array_keys($matchResul);
-    //     $sorted=$productos->sortBy(function($model,$key) use ($keyOrder){
-    //          return array_search($key, $keyOrder);
+    public function Ordenarresultados(Collection $productos,$palabras)
+    {
+       // $word = "Many Blocks";
+       //  if ( preg_match("~\bblocks\b~",$word) )
+       //    dd("matched");
+       //  else
+       //    dd("no match");
+        $matchResul=[];
+        foreach ($productos as $key => $p) {
+            $match=0;
+            $name=str_replace(['/','-',' '],'-',utf8_decode($p->name));
+            $description_short=str_replace(['/','-',' '],'-',utf8_decode($p->description_short));
+            $product=strtolower($this->LimpiarAcentos($name));
+            $modelo=strtolower($this->LimpiarAcentos($description_short));
+            foreach ($palabras as $palabra) {
+               $palabra=strtolower($this->LimpiarAcentos($palabra));
+               if ( preg_match("~\b".$palabra."\b~",$product) )
+               {
+                $match++;
+               }
+               if(strpos($product, $palabra)===0)
+               {
+                $match++;
+               }
+               if ( preg_match("~\b".$palabra."\b~",$modelo) )
+               {
+                $match+=200;
+               }
+           }
+           $matchResul[]=$match;
+        }
+        //dd($productos[0]);
+        arsort($matchResul);
+        $keyOrder = array_keys($matchResul);
+        $sorted=$productos->sortBy(function($model,$key) use ($keyOrder){
+             return array_search($key, $keyOrder);
 
-    //     });
+        });
 
-    //     //dd($sorted);
-    //     return $sorted;
-    // }
+        //dd($sorted);
+        return $sorted;
+    }
 
-    // public static function LimpiarAcentos($string)
-    // {
-    //     if(preg_match_all('/[áéíóú]/i',$string,$matches))
-    //     {
-    //         while(strpos($string, 'á')!==FALSE){
-    //             $string=substr_replace($string,'a',strpos($string,'á'),2);
-    //         }
+    public static function LimpiarAcentos($string)
+    {
+        if(preg_match_all('/[áéíóú]/i',$string,$matches))
+        {
+            while(strpos($string, 'á')!==FALSE){
+                $string=substr_replace($string,'a',strpos($string,'á'),2);
+            }
 
-    //         while(strpos($string, 'é')!==FALSE){
-    //             $string=substr_replace($string,'e',strpos($string,'é'),2);
-    //         }
+            while(strpos($string, 'é')!==FALSE){
+                $string=substr_replace($string,'e',strpos($string,'é'),2);
+            }
 
-    //         while(strpos($string, 'í')!==FALSE){
-    //             $string=substr_replace($string,'i',strpos($string,'í'),2);
-    //         }
+            while(strpos($string, 'í')!==FALSE){
+                $string=substr_replace($string,'i',strpos($string,'í'),2);
+            }
 
-    //         while(strpos($string, 'ó')!==FALSE){
-    //             $string=substr_replace($string,'o',strpos($string,'ó'),2);
-    //         }
+            while(strpos($string, 'ó')!==FALSE){
+                $string=substr_replace($string,'o',strpos($string,'ó'),2);
+            }
 
-    //         while(strpos($string, 'ú')!==FALSE){
-    //             $string=substr_replace($string,'u',strpos($string,'ú'),2);
-    //         }
-    //         return $string;
-    //     }
-    //     else
-    //     {
-    //         return $string;
-    //     }
-    // }
-    // public function PosiblesAcentos($string)
-    // {
-    //     $resul=[];
-    //     $original=$string;
+            while(strpos($string, 'ú')!==FALSE){
+                $string=substr_replace($string,'u',strpos($string,'ú'),2);
+            }
+            return $string;
+        }
+        else
+        {
+            return $string;
+        }
+    }
+    public function PosiblesAcentos($string)
+    {
+        $resul=[];
+        $original=$string;
 
-    //     $i=0;
-    //     while(strpos($string, 'a')!==FALSE){
-    //         $resul[]=substr_replace($original,'á',strpos($string,'a')-$i,1);
-    //         $string=substr_replace($string,'á',strpos($string,'a'),1);
-    //         $i++;
-    //     }
+        $i=0;
+        while(strpos($string, 'a')!==FALSE){
+            $resul[]=substr_replace($original,'á',strpos($string,'a')-$i,1);
+            $string=substr_replace($string,'á',strpos($string,'a'),1);
+            $i++;
+        }
 
-    //     $i=0;
-    //     while(strpos($string, 'e')!==FALSE){
-    //         $resul[]=substr_replace($original,'é',strpos($string,'e')-$i,1);
-    //         $string=substr_replace($string,'é',strpos($string,'e'),1);
-    //         $i++;
-    //     }
+        $i=0;
+        while(strpos($string, 'e')!==FALSE){
+            $resul[]=substr_replace($original,'é',strpos($string,'e')-$i,1);
+            $string=substr_replace($string,'é',strpos($string,'e'),1);
+            $i++;
+        }
 
-    //     $i=0;
-    //     while(strpos($string, 'i')!==FALSE){
-    //         $resul[]=substr_replace($original,'í',strpos($string,'i')-$i,1);
-    //         $string=substr_replace($string,'í',strpos($string,'i'),1);
-    //         $i++;
-    //     }
+        $i=0;
+        while(strpos($string, 'i')!==FALSE){
+            $resul[]=substr_replace($original,'í',strpos($string,'i')-$i,1);
+            $string=substr_replace($string,'í',strpos($string,'i'),1);
+            $i++;
+        }
 
-    //     $i=0;
-    //     while(strpos($string, 'o')!==FALSE){
-    //         $resul[]=substr_replace($original,'ó',strpos($string,'o')-$i,1);
-    //         $string=substr_replace($string,'ó',strpos($string,'o'),1);
-    //         $i++;
-    //     }
+        $i=0;
+        while(strpos($string, 'o')!==FALSE){
+            $resul[]=substr_replace($original,'ó',strpos($string,'o')-$i,1);
+            $string=substr_replace($string,'ó',strpos($string,'o'),1);
+            $i++;
+        }
 
-    //     $i=0;
-    //     while(strpos($string, 'u')!==FALSE){
-    //         $resul[]=substr_replace($original,'ú',strpos($string,'u')-$i,1);
-    //         $string=substr_replace($string,'ú',strpos($string,'u'),1);
-    //         $i++;
-    //     }
+        $i=0;
+        while(strpos($string, 'u')!==FALSE){
+            $resul[]=substr_replace($original,'ú',strpos($string,'u')-$i,1);
+            $string=substr_replace($string,'ú',strpos($string,'u'),1);
+            $i++;
+        }
 
-    //     return $resul;
-    // }
-    // /*BLOQUE DE CODIGO DE ARRIBA ES DE LA VERSION 6*/
+        return $resul;
+    }
+    /*BLOQUE DE CODIGO DE ARRIBA ES DE LA VERSION 6*/
 
     // public function CargarProducto($datos)
     // {

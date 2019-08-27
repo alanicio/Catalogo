@@ -15,10 +15,11 @@ Route::get('/{categoria}/{id}-{something}','Producto\ProductoController@show');
 Route::resource('/','Producto\ProductoController');
 // Route::get('{categoria}/{id}-{titulo}-{marca}-{modelo}','Producto\ProductoController@permalink');
 // Route::get('/','Producto\ProductoController@index');
-// Route::get('search','Producto\ProductoController@Buscar');
+Route::get('search','Producto\ProductoController@Buscar');
 
 //categorias
-Route::resource('categorias','Producto\CategoriaController');
+// Route::resource('categorias','Producto\CategoriaController');
+Route::get('{id}-{categoria}','Producto\CategoriaController@show');
 
 
 //Direcciones

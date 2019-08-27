@@ -4,6 +4,10 @@
 
 
 @section('content')
+@php
+  use App\ProductoData;
+  use App\Urls;
+@endphp
 
 <div class="col-lg-9">
 
@@ -11,14 +15,20 @@
     <img class="card-img-top img-fluid" src="{{strlen($producto->imagen)?$producto->imagen:asset('imgs/not_found.jpeg')}}" alt="">
     <div class="card-body">
       <h2>{{$producto->name}}</h2>
-      <h5>testo</h5>
-      <h5>read</h5>
+      <h5><strong>Reference:
+        @php
+          $data=ProductoData::where('id_product',$producto->id_product)->get();
+          echo($data[0]->reference);
+        @endphp
+        </strong>
+      </h5>
+      <h5><strong>Condition: </strong> {{$data[0]->condition}}</h5>
       <br>
-      <h5>880</h5>
+      <h5>{!!$producto->description_short!!}</h5>
       <br>
-      <h4 class="card-title">data</h4>
+      <h4 class="card-title">More info</h4>
       <br>
-      <p class="card-text">data</p>
+      <p class="card-text">{!!$producto->description!!}</p>
      <!--  <span class="text-warning">&#9733; &#9733; &#9733; &#9733; &#9734;</span>
       4.0 stars -->
     </div>
