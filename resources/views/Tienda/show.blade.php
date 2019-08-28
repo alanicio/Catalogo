@@ -1,5 +1,8 @@
 @extends('principal')
 @section('keywords')
+  <meta name="keywords" content="{{$producto->meta_keywords}}">
+  <meta name="description" content="{{$producto->meta_description}}">
+  <title>{{$producto->meta_title}}</title>
 @endsection
 
 
@@ -7,12 +10,20 @@
 @php
   use App\ProductoData;
   use App\Urls;
-@endphp
+  use App\Imagen;
 
+  $imagen=Imagen::where('id_product',$producto->id_product)->first()->id_image;
+  $digitos=str_split($imagen);
+  $src='imgs/img/p';
+  foreach($digitos as $n){
+    $src=$src.'/'.$n;
+  }
+  $src=$src.'/'.$imagen.'.jpg';
+@endphp
 <div class="col-lg-9">
 
   <div class="card mt-4">
-    <img class="card-img-top img-fluid" src="{{strlen($producto->imagen)?$producto->imagen:asset('imgs/not_found.jpeg')}}" alt="">
+    <img class="card-img-top img-fluid" src="{{asset($src)}}" alt="">
     <div class="card-body">
       <h2>{{$producto->name}}</h2>
       <h5><strong>Reference:

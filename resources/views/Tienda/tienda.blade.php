@@ -1,4 +1,12 @@
 @extends('principal')
+@section('keywords')
+  @isset($cat)
+    <title>{{$cat->meta_title}}</title>
+    <meta name="keywords" content="{{$cat->meta_keywords}}">
+    <meta name="description" content="{{$cat->meta_description}}">
+  @endisset
+@endsection
+
 @section('content')
 
 <!-- @php
@@ -9,6 +17,8 @@ use \App\Http\Controllers\Producto\ProductoController;
   use App\ProductoData;
   use App\Urls;
   use App\Imagen;
+  use App\Productos_categorias;
+  use App\Categoria;
   //dd( Urls::where('request_uri','like','www.seguridad-nonex.com/%/5459-%.html')->first('request_uri') );
 @endphp
 
@@ -50,27 +60,28 @@ use \App\Http\Controllers\Producto\ProductoController;
         <div class="col-lg-4 col-md-6 mb-4">
           <div class="card h-100">
             @php
-              /*$imagen=Imagen::where('id_product',$p->id_product)->first()->id_image;
+              $imagen=Imagen::where('id_product',$p->id_product)->first()->id_image;
               $digitos=str_split($imagen);
-              $src='';
-              dd($digitos);
+              $src='imgs/img/p';
               foreach($digitos as $n){
-                echo ('hola');
+                $src=$src.'/'.$n;
               }
-              echo($digitos);*/
+              $src=$src.'/'.$imagen.'.jpg';
+              $Pcategoria=Productos_categorias::where('id_product',$p->id_product)->first()->id_category;
+              $cat=Categoria::where('id_category',$Pcategoria)->first();
             @endphp
 
             @if(Urls::where('request_uri','like','www.seguridad-nonex.com/%/'.$p->id_product.'-%.html')->first('request_uri'))
-              <a href="{{substr(Urls::where('request_uri','like','www.seguridad-nonex.com/%/'.$p->id_product.'-%.html')->first('request_uri')->request_uri,24)}}"><img class="card-img-top" src="{{asset('imgs/img/p')}}" alt=""></a> 
+              <a href="{{substr(Urls::where('request_uri','like','www.seguridad-nonex.com/%/'.$p->id_product.'-%.html')->first('request_uri')->request_uri,24)}}"><img class="card-img-top" src="{{asset($src)}}" alt=""></a> 
               <div class="card-body d-flex flex-column">
                 <h5 class="card-title">
                   <a href="{{substr(Urls::where('request_uri','like','www.seguridad-nonex.com/%/'.$p->id_product.'-%.html')->first('request_uri')->request_uri,24)}}">{{$p->name}}</a>
                 </h5>
             @else
-              <a href="{{url('otros/'.$p->id_product.'-'.$p->link_rewrite.$url)}}"><img class="card-img-top" src="{{asset('imgs/not_found.png')}}" alt=""></a> 
+              <a href="{{url('otros/'.$p->id_product.'-'.$p->link_rewrite.'.html')}}"><img class="card-img-top" src="{{asset($src)}}" alt=""></a> 
               <div class="card-body d-flex flex-column">
                 <h5 class="card-title">
-                  <a href="{{url('otros/'.$p->id_product.'-'.$p->link_rewrite.$url)}}">{{$p->name}}</a>
+                  <a href="{{url($cat->link_rewrite.'/'.$p->id_product.'-'.$p->link_rewrite.'.html')}}">{{$p->name}}</a>
                 </h5>
             @endif
               
@@ -86,12 +97,6 @@ use \App\Http\Controllers\Producto\ProductoController;
             </div> -->
           </div>
         </div>
-      @else
-
-        @php
-          $url=$p->link_rewrite;
-        @endphp
-
       @endif
     @endforeach
     {{$productos->appends(Request::except('page'))->links()}}

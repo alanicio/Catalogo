@@ -54,9 +54,9 @@ class CategoriaController extends Controller
         foreach ($data as $key => $value) {
             $ids[]=$value->id_product;
         }
-        //dd($ids);
+        $categoria=Categoria::where('id_category',$id)->where('id_lang',2)->first();
         $productos=Producto::whereIn('id_product',$ids)->paginate(18);
-        return view('Tienda.tienda',['productos'=>$productos]);
+        return view('Tienda.tienda',['productos'=>$productos,'cat'=>$categoria]);
     }
 
     /**
