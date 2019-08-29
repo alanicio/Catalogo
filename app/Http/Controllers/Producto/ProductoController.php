@@ -11,6 +11,7 @@ use App\Categoria;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Input;
+use App\Productos_categorias;
 
 class ProductoController extends Controller
 {
@@ -22,7 +23,7 @@ class ProductoController extends Controller
     public function index()
     {
         $index=true;
-        return view('Tienda.tienda',['productos'=>Producto::paginate(18)]);
+        return view('Tienda.tienda',['productos'=>Producto::paginate(18, ['*'], 'p')]);
     }
 
     /**
@@ -52,11 +53,34 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($categoria,$id)
+    public function show($categoria,$id,$data)
     {
         $producto=Producto::where('id_product',$id)->where('id_lang',2)->first();
-        //dd($producto);
-        return view('Tienda.show',['producto'=>$producto]);
+        $productoUno=Producto::where('id_product',$id)->where('id_lang',1)->first();
+        $cat=Categoria::where('link_rewrite',$categoria)->get();
+        $exist=0;
+        if(isset($cat))
+        {
+            foreach ($cat as $key => $value) {
+                $pc=Productos_categorias::where('id_category',$value->id_category)->where('id_product',$id)->first();
+                if(isset($pc))
+                    break;
+            }
+        }
+        else
+        {
+            abort(404, 'Page not found');
+        }
+        if(isset($pc))
+        {
+            if($data==$productoUno->link_rewrite.'.html' || $data==$producto->link_rewrite.'.html')
+                return view('Tienda.show',['producto'=>$producto]);    
+           
+        }
+        else
+        {
+            abort(404, 'Page not found');
+        }
     }
 
     public function permalink($categoria,$id,$titulo,$marca,$modelo)

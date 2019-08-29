@@ -19,59 +19,11 @@
           <button class="btn btn-outline-white btn-md my-0 ml-sm-2" type="submit"><i class="fas fa-search" style="color: white;"></i></button>
         </form>
         <ul class="navbar-nav ml-auto">
-          <!-- <li class="nav-item" id="inicio">
-            <a class="nav-link" href="/">INICIO
-              <span class="sr-only">(current)</span>
-            </a>
-          </li> -->
+          
           <li class="nav-item" id="tienda">
             <a class="nav-link" href="{{url('/')}}">TIENDA</i></a>
           </li>
          
-          <!--  <li class="nav-item" id="carrito">
-              <a class="nav-link" href="{{Route('ventas.create')}}"><i class="fas fa-shopping-cart" style="color: #E55D28"></i></a>
-            </li> -->
-          <!-- @if(Auth::check())
-           
-            <li class="nav-item dropdown" id="usuario">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{Auth::User()->name}}</a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{Route('ventas.index')}}">MI CUENTA</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{ route('logout') }}"
-                                         onclick="event.preventDefault();
-                                                       document.getElementById('logout-form').submit();">
-                                          {{ __('Salir') }}
-                </a>
-
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                    @csrf
-                </form>
-              </div>
-            </li>
-          @else
-            <li class="nav-item dropdown" id="sesion">
-              <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">INCIAR SESIÓN</a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="{{Route('register')}}">REGISTRARSE</a>
-                <a class="dropdown-item" href="{{Route('login')}}">MI CUENTA</a>
-                       
-              </div>
-            </li>
-
-          @endif -->
-
-            
-
-         <!--  <li class="nav-item">
-            <a class="nav-link" href="#">About</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Services</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-          </li> -->
         </ul>
       </div>
     </div>

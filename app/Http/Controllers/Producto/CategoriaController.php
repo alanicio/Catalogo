@@ -49,13 +49,20 @@ class CategoriaController extends Controller
      */
     public function show($id,$categoria)
     {
-        $data=Productos_categorias::where('id_category',$id)->get();
+        if(Categoria::where('id_category',$id)->where('link_rewrite',$categoria)->first())
+        {
+            $data=Productos_categorias::where('id_category',$id)->get();
+        }
+        else
+        {
+            abort(404, 'Page not found');
+        }
         $ids=[];
         foreach ($data as $key => $value) {
             $ids[]=$value->id_product;
         }
         $categoria=Categoria::where('id_category',$id)->where('id_lang',2)->first();
-        $productos=Producto::whereIn('id_product',$ids)->paginate(18);
+        $productos=Producto::whereIn('id_product',$ids)->paginate(18, ['*'], 'p');
         return view('Tienda.tienda',['productos'=>$productos,'cat'=>$categoria]);
     }
 

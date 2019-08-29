@@ -22,23 +22,6 @@ Route::get('search','Producto\ProductoController@Buscar');
 Route::get('{id}-{categoria}','Producto\CategoriaController@show');
 
 
-//Direcciones
-Route::post('venta/direccion','Venta\DireccionController@create')->name('direccion.create');
-Route::post('cp','Venta\DireccionController@cp');
-Route::post('venta/confirmacion','Venta\DireccionController@store');
-Route::get('confirmacion','Venta\DireccionController@redireccion');
-
-//Ventas
-Route::post('carrito','Venta\VentaController@shopping');
-Route::post('atencion_cliente','Venta\AtencionClienteController@contacto')->name('contacto');
-Route::get('add_producto/{id}','Venta\VentaController@AddCarrito');
-Route::get('quitar_carrito/{id}','Venta\VentaController@RmCarrito');
-Route::post('convert_c','Venta\VentaController@ConvertC');
-Route::get('contacto',function(){
-	return view('Cliente.contacto');
-});
-Route::resource('ventas','Venta\VentaController');
-
 //autenticacion
 Auth::routes();
 

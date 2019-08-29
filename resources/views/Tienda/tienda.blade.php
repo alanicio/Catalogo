@@ -71,19 +71,13 @@ use \App\Http\Controllers\Producto\ProductoController;
               $cat=Categoria::where('id_category',$Pcategoria)->first();
             @endphp
 
-            @if(Urls::where('request_uri','like','www.seguridad-nonex.com/%/'.$p->id_product.'-%.html')->first('request_uri'))
-              <a href="{{substr(Urls::where('request_uri','like','www.seguridad-nonex.com/%/'.$p->id_product.'-%.html')->first('request_uri')->request_uri,24)}}"><img class="card-img-top" src="{{asset($src)}}" alt=""></a> 
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">
-                  <a href="{{substr(Urls::where('request_uri','like','www.seguridad-nonex.com/%/'.$p->id_product.'-%.html')->first('request_uri')->request_uri,24)}}">{{$p->name}}</a>
-                </h5>
-            @else
-              <a href="{{url('otros/'.$p->id_product.'-'.$p->link_rewrite.'.html')}}"><img class="card-img-top" src="{{asset($src)}}" alt=""></a> 
+
+              <a href="{{url($cat->link_rewrite.'/'.$p->id_product.'-'.$p->link_rewrite.'.html')}}"><img class="card-img-top" src="{{asset($src)}}" alt=""></a> 
               <div class="card-body d-flex flex-column">
                 <h5 class="card-title">
                   <a href="{{url($cat->link_rewrite.'/'.$p->id_product.'-'.$p->link_rewrite.'.html')}}">{{$p->name}}</a>
                 </h5>
-            @endif
+          
               
               <p class="card-text">Reference:
                 @php
