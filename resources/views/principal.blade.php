@@ -40,6 +40,7 @@
 		<!-- Page Content -->
   		<div class="container">
     		<div class="row">
+    			@include('Tienda.categorias')
 				@yield('content')
 			</div>
     		<!-- /.row -->

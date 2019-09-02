@@ -10,6 +10,18 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+//Servicios
+Route::get('content/{id}-{link}','ServicioController@show');
+
+//Contacto
+Route::get('contactenos',function(){
+	return view('Cliente.contacto');
+});
+Route::post('envio','ServicioController@contacto');
+
+
 //Productos
 Route::get('/{categoria}/{id}-{something}','Producto\ProductoController@show');
 Route::resource('/','Producto\ProductoController');

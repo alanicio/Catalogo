@@ -6,7 +6,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color:  #1D334C;">
     <div class="container">
-      <a class="navbar-brand" href="/"><img src="{{asset('imgs/inicio/fuente.png')}}" style="width: 150px;"></a>
+      <a class="navbar-brand" href="/">Seguridad Nonex</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -19,11 +19,22 @@
           <button class="btn btn-outline-white btn-md my-0 ml-sm-2" type="submit"><i class="fas fa-search" style="color: white;"></i></button>
         </form>
         <ul class="navbar-nav ml-auto">
-          
+          <!-- <li class="nav-item" id="inicio">
+            <a class="nav-link" href="/">INICIO
+              <span class="sr-only">(current)</span>
+            </a>
+          </li> -->
           <li class="nav-item" id="tienda">
             <a class="nav-link" href="{{url('/')}}">TIENDA</i></a>
           </li>
-         
+           <li class="nav-item" id="carrito">
+              <a class="nav-link" href="{{url('contactenos')}}"><i class="fas fa-phone" style="color: #E55D28"></i> (0155) 2978-4919</a>
+            </li>
+            <li class="nav-item" id="carrito">
+              <a class="nav-link" href="{{url('contactenos')}}"><i class="fas fa-envelope-square" style="color: #E55D28"></i> ventas@sistemasnonex.com</a>
+            </li>
+
+
         </ul>
       </div>
     </div>
