@@ -24,7 +24,7 @@ class ServicioController extends Controller
 
     public function contacto(Request $request)
     {
-        Mail::to('ventas@sistemasnonex.com ')->send(new Contacto($request->all()));
+        Mail::to('ventas@seguridad-nonex.com')->send(new Contacto($request->all()));
         return redirect('/');
     }
 }
